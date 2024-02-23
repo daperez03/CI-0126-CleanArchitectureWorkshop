@@ -1,0 +1,4 @@
+CREATE TABLE [dbo].[Players] (
+	[UserName] VARCHAR(30) NOT NULL PRIMARY KEY,
+	[TeamName] VARCHAR(30) NULL FOREIGN KEY (TeamName) REFERENCES Teams(Name),
+)

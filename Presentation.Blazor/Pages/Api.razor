@@ -1,0 +1,53 @@
+﻿@page "/api"
+@using UnityWithBackendWorkshop.Infrastructure;
+@inject ApiClient ApiClient
+
+<PageTitle>Api Calls</PageTitle>
+
+<h1>Teams</h1>
+
+<p>This component demonstrates fetching data from the server.</p>
+
+@if (teams == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Team Name</th>
+                <th>Player Count</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var team in teams)
+            {
+                <tr>
+                    <td>@team.TeamName</td>
+                    <td>@team.Players.Count</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="LoadDataAsync">Reload</MudButton>
+
+
+@code {
+    private TeamDto[]? teams;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadDataAsync();
+    }
+
+    private async Task LoadDataAsync()
+    {
+        teams = null;
+        StateHasChanged();
+        teams = (await ApiClient.TeamsGetAsync()).Teams.ToArray();
+    }
+}
